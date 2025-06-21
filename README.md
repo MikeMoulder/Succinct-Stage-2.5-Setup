@@ -1,9 +1,14 @@
 # Succinct Stage 2.5 Setup
 
-- Video Guide: 
+Video Guide
+
+- Link: 
 
 It's advisable you use this guide alongside the video guide above, so as to get the use of each codeline.
 
+### Create A Vast.ai account
+
+- Link: https://cloud.vast.ai/?ref_id=62897&creator_id=62897&name=Ubuntu%2022.04%20VM
 ---
 
 ## STEP I: Generate your SSH Key on your local machine
