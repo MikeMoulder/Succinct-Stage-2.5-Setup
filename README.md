@@ -12,12 +12,9 @@ Start from STEP I if you are renting/rented a GPU from any marketplace else SKIP
 
 ## STEP I: Rent GPU & Link SSH Key
 
----
-
 ### Create A Vast.ai Account First
 
 - Link: https://cloud.vast.ai/?ref_id=62897&creator_id=62897&name=Ubuntu%20Desktop%20(VM)
----
 
 ## Generate your SSH Key on your local machine
 
