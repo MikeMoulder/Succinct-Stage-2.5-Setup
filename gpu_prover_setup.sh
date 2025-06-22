@@ -9,17 +9,24 @@ echo "🧱 Installing Docker (if not present)..."
 sudo apt update && sudo apt install -y docker.io
 
 echo "⚡ Calibrating GPU..."
-docker run --rm --gpus all --network host \
+CALIBRATION_OUTPUT=$(docker run --rm --gpus all --network host \
   -v /var/run/docker.sock:/var/run/docker.sock \
   public.ecr.aws/succinct-labs/spn-node:latest-gpu calibrate \
   --usd-cost-per-hour 0.5 \
   --utilization-rate 0.6 \
   --profit-margin 0.2 \
-  --prove-price 1.0 | tee calibration_output.txt
+  --prove-price 1.0)
 
-# Parse calibration values
-PGUS=$(grep -oP '(?<=PGUS_PER_SECOND=)[0-9.]+' calibration_output.txt)
-BPGU=$(grep -oP '(?<=PROVE_PER_BPGU=)[0-9.]+' calibration_output.txt)
+echo "$CALIBRATION_OUTPUT" | tee calibration_output.txt
+
+# Parse calibration values from output
+PGUS=$(echo "$CALIBRATION_OUTPUT" | grep -oP '(?<=Estimated Throughput │ )\d+')
+BPGU=$(echo "$CALIBRATION_OUTPUT" | grep -oP '(?<=Estimated Bid Price  │ )[\d.]+')
+
+if [[ -z "$PGUS" || -z "$BPGU" ]]; then
+  echo "❌ Failed to extract calibration values. Please check calibration_output.txt manually."
+  exit 1
+fi
 
 echo ""
 echo "✅ Calibration Complete."
