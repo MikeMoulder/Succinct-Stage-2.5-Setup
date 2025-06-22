@@ -27,6 +27,12 @@ curl -sL https://raw.githubusercontent.com/MikeMoulder/Succinct-Stage-2.5-Setup/
 
 ## STEP II: Setup Prover CLI & Activate Prover Node In 1-Click!
 
+### Setup Credentials:
+```bash
+export PROVER_ADDRESS=[prover address not wallet address]
+export PRIVATE_KEY=[wallet with staked $prove token]
+```
+
 ### Setup Link:
 ```bash
 curl -sL https://raw.githubusercontent.com/MikeMoulder/Succinct-Stage-2.5-Setup/main/gpu_prover_setup.sh | bash
