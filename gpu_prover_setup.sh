@@ -5,11 +5,34 @@ echo "Succinct Prover GPU Setup & Prover Runner"
 echo "Created by Rex ⚡"
 echo "------------------------------------------"
 
-# Check if Docker is installed
+# Auto-install Docker if missing
 if ! command -v docker &> /dev/null; then
-    echo "❗ Docker is not installed on this machine."
-    echo "👉 Please install Docker manually before running this script:"
-    echo "    https://docs.docker.com/engine/install/ubuntu/"
+    echo "🔧 Docker not found. Installing Docker..."
+    
+    sudo apt remove -y containerd || true
+    sudo apt update
+    sudo apt install -y ca-certificates curl gnupg lsb-release
+
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+      $(lsb_release -cs) stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+    sudo apt update
+    sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+    echo "✅ Docker installed successfully."
+fi
+
+# Check if required environment variables are set
+if [[ -z "$PROVER_ADDRESS" || -z "$PRIVATE_KEY" ]]; then
+    echo "❌ ERROR: Please export PROVER_ADDRESS and PRIVATE_KEY before running this script."
+    echo "Example:"
+    echo "  export PROVER_ADDRESS=0xYourProverAddress"
+    echo "  export PRIVATE_KEY=yourPrivateKey"
     exit 1
 fi
 
@@ -37,9 +60,6 @@ echo "✅ Calibration Complete."
 echo "PGUS_PER_SECOND = $PGUS"
 echo "PROVE_PER_BPGU  = $BPGU"
 echo ""
-
-read -p "Enter your PROVER_ADDRESS: " PROVER_ADDRESS
-read -p "Enter your PRIVATE_KEY: " PRIVATE_KEY
 
 echo "🚀 Launching SPN Prover as Docker container..."
 
