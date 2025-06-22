@@ -5,8 +5,13 @@ echo "Succinct Prover GPU Setup & Prover Runner"
 echo "Created by Rex ⚡"
 echo "------------------------------------------"
 
-echo "🧱 Installing Docker (if not present)..."
-sudo apt update && sudo apt install -y docker.io
+# Check if Docker is installed
+if ! command -v docker &> /dev/null; then
+    echo "❗ Docker is not installed on this machine."
+    echo "👉 Please install Docker manually before running this script:"
+    echo "    https://docs.docker.com/engine/install/ubuntu/"
+    exit 1
+fi
 
 echo "⚡ Calibrating GPU..."
 CALIBRATION_OUTPUT=$(docker run --rm --gpus all --network host \
@@ -19,9 +24,8 @@ CALIBRATION_OUTPUT=$(docker run --rm --gpus all --network host \
 
 echo "$CALIBRATION_OUTPUT" | tee calibration_output.txt
 
-# Parse calibration values from output
-PGUS=$(echo "$CALIBRATION_OUTPUT" | grep -oP '(?<=Estimated Throughput │ )\d+')
-BPGU=$(echo "$CALIBRATION_OUTPUT" | grep -oP '(?<=Estimated Bid Price  │ )[\d.]+')
+PGUS=$(echo "$CALIBRATION_OUTPUT" | awk -F'│' '/Estimated Throughput/ {gsub(/[^0-9]/,"",$3); print $3}')
+BPGU=$(echo "$CALIBRATION_OUTPUT" | awk -F'│' '/Estimated Bid Price/ {gsub(/[^0-9.]/,"",$3); print $3}')
 
 if [[ -z "$PGUS" || -z "$BPGU" ]]; then
   echo "❌ Failed to extract calibration values. Please check calibration_output.txt manually."
