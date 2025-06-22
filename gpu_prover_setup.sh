@@ -48,7 +48,8 @@ CALIBRATION_OUTPUT=$(docker run --rm --gpus all --network host \
 echo "$CALIBRATION_OUTPUT" | tee calibration_output.txt
 
 PGUS=$(echo "$CALIBRATION_OUTPUT" | awk -F'│' '/Estimated Throughput/ {gsub(/[^0-9]/,"",$3); print $3}')
-BPGU=$(echo "$CALIBRATION_OUTPUT" | awk -F'│' '/Estimated Bid Price/ {gsub(/[^0-9.]/,"",$3); print $3}')
+BPGU=$(echo "$CALIBRATION_OUTPUT" | awk -F'│' '/Estimated Bid Price/ {print $3}' | awk '{print $1}')
+
 
 if [[ -z "$PGUS" || -z "$BPGU" ]]; then
   echo "❌ Failed to extract calibration values. Please check calibration_output.txt manually."
