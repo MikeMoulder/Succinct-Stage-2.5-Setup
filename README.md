@@ -6,42 +6,31 @@
 
 It's advisable you use this guide alongside the video guide above, so as to get the use of each codeline.
 
+Start from STEP I if you are renting/rented a GPU from any marketplace else SKIP to STEP II if you are using the GPU on your local machine!
+
+---
+
+## STEP I: Rent GPU & Link SSH Key
+
+---
+
 ### Create A Vast.ai Account First
 
 - Link: https://cloud.vast.ai/?ref_id=62897&creator_id=62897&name=Ubuntu%20Desktop%20(VM)
 ---
 
-## STEP I: Generate your SSH Key on your local machine
+## Generate your SSH Key on your local machine
 
 - Generate Key:
 
 ```bash
-ssh-keygen -t rsa -b 4096 -f ~/.ssh/spn_rsa
+curl -sL https://raw.githubusercontent.com/MikeMoulder/Succinct-Stage-2.5-Setup/main/ssh_setup.sh | bash
 ```
 
-- View public key of the SSH
+## STEP II: Setup Prover CLI & Activate Prover Node In 1-Click!
 
 ```bash
-cat ~/.ssh/spn_rsa.pub
-```
-
----
-
-## STEP II: Calibrate GPU
-
-```bash
-docker run --rm --gpus all --network host -v /var/run/docker.sock:/var/run/docker.sock public.ecr.aws/succinct-labs/spn-node:latest-gpu calibrate --usd-cost-per-hour 0.5 --utilization-rate 0.6 --profit-margin 0.2 --prove-price 1.0
-```
-
----
-
-## STEP III: Set Environment Element
-
-```bash
-export PGUS_PER_SECOND= [Value from calibration]
-export PROVE_PER_BPGU= [Value from calibration]
-export PROVER_ADDRESS= [Prover Address not Wallet Address]
-export PRIVATE_KEY= [Private Key Wallet with staked $PROVE token]
+curl -sL https://raw.githubusercontent.com/MikeMoulder/Succinct-Stage-2.5-Setup/main/gpu_prover_setup.sh | bash
 ```
 
 ### Faucet Links:
@@ -49,26 +38,6 @@ export PRIVATE_KEY= [Private Key Wallet with staked $PROVE token]
 - Faucet Trade Bot (Drips 0.05 ETH): https://t.me/faucet_trade_bot
 
 --- 
-
-### STEP IV: Run Prover
-
-```bash
-docker run -d --name spn-prover \
-  --gpus all \
-  --network host \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  --restart unless-stopped \
-  -e PGUS_PER_SECOND=366755 \
-  -e PROVE_PER_BPGU=0.76 \
-  -e PRIVATE_KEY=your_private_key \
-  -e PROVER_ADDRESS=0xYourProverAddress \
-  public.ecr.aws/succinct-labs/spn-node:latest-gpu prove \
-  --rpc-url https://rpc-production.succinct.xyz \
-  --throughput $PGUS_PER_SECOND \
-  --bid $PROVE_PER_BPGU \
-  --private-key $PRIVATE_KEY \
-  --prover $PROVER_ADDRESS
-```
 
 And voila, you have successfully started contributing to the Succinct Network as a Prover! 😁
 
