@@ -16,16 +16,18 @@ Start from STEP I if you are renting/rented a GPU from any marketplace else SKIP
 
 - Link: https://cloud.vast.ai/?ref_id=62897&creator_id=62897&name=Ubuntu%20Desktop%20(VM)
 
-## Generate your SSH Key on your local machine
+### Generate your SSH Key on your local machine
 
 - Generate Key:
 
 ```bash
 curl -sL https://raw.githubusercontent.com/MikeMoulder/Succinct-Stage-2.5-Setup/main/ssh_setup.sh | bash
 ```
+---
 
 ## STEP II: Setup Prover CLI & Activate Prover Node In 1-Click!
 
+### Setup Link:
 ```bash
 curl -sL https://raw.githubusercontent.com/MikeMoulder/Succinct-Stage-2.5-Setup/main/gpu_prover_setup.sh | bash
 ```
@@ -33,8 +35,6 @@ curl -sL https://raw.githubusercontent.com/MikeMoulder/Succinct-Stage-2.5-Setup/
 ### Faucet Links:
 
 - Faucet Trade Bot (Drips 0.05 ETH): https://t.me/faucet_trade_bot
-
---- 
 
 And voila, you have successfully started contributing to the Succinct Network as a Prover! 😁
 
