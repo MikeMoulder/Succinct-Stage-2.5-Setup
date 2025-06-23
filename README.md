@@ -2,7 +2,7 @@
 
 ### Video Guide
 
-- Link: 
+- Link: https://youtu.be/-zPXNJmV-Ks?si=AGP-EgdiR6PuBcl-
 
 It's advisable you use this guide alongside the video guide above, so as to get the use of each codeline.
 
